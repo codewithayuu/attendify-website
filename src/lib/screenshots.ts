@@ -8,13 +8,11 @@ const ALLOWED_EXT = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg"]);
 export async function getScreenshots(): Promise<Slide[]> {
   const primary = path.join(process.cwd(), "src", "screenshots");
   const fallback = path.join(process.cwd(), "src", "screenshot");
-  let base = primary;
   let entries: string[] = [];
   try {
     entries = await fs.readdir(primary);
   } catch {
     try {
-      base = fallback;
       entries = await fs.readdir(fallback);
     } catch {
       return [];

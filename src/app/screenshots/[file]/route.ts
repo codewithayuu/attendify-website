@@ -11,9 +11,10 @@ const CONTENT_TYPE: Record<string, string> = {
   ".svg": "image/svg+xml",
 };
 
-export async function GET(req: NextRequest, { params }: { params: { file: string } }) {
+export async function GET(req: NextRequest, context: { params: Promise<{ file: string }> }) {
   try {
-    const filename = decodeURIComponent(params.file);
+    const { file } = await context.params;
+    const filename = decodeURIComponent(file);
     const bases = [
       path.join(process.cwd(), "src", "screenshots"),
       path.join(process.cwd(), "src", "screenshot"),

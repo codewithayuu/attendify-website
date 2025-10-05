@@ -12,10 +12,11 @@ const CONTENT_TYPE: Record<string, string> = {
 
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { file: string } },
+  context: { params: Promise<{ file: string }> },
 ) {
   try {
-    const filename = decodeURIComponent(params.file);
+    const { file } = await context.params;
+    const filename = decodeURIComponent(file);
     const base = path.join(process.cwd(), "src", "screenshot");
     const full = path.join(base, filename);
     const rel = path.relative(base, full);

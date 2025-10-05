@@ -16,7 +16,7 @@ export default function Footer() {
             Bugs & Feedback
           </a>
         </div>
-        <div className="text-center">Made with ❤️ by iambatman.</div>
+        <div className="text-center">© {year} • Made with ❤️ by iambatman.</div>
       </div>
     </footer>
   );
