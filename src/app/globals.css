@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Dark-first palette (Batman/space vibe) */
+  --background: #0b0f14; /* near-black with blue tint */
+  --foreground: #e6e6e6; /* high-contrast text */
+  --muted: #8796a8;
+  --card: #0f1520;
+  --border: #1b2430;
+
+  /* Accent gradient: electric purple → teal */
+  --accent-from: #7c3aed; /* violet-600 */
+  --accent-to: #06b6d4; /* cyan-500 */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-accent-from: var(--accent-from);
+  --color-accent-to: var(--accent-to);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
+/* Auto light mode */
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #171717;
+    --muted: #4b5563;
+    --card: #f8fafc;
+    --border: #e5e7eb;
   }
 }
 
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+html,
 body {
-  background: var(--background);
+  height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(1000px 600px at 10% -10%, #1a2431 0%, transparent 60%),
+    radial-gradient(800px 500px at 90% 10%, #1b1530 0%, transparent 55%),
+    radial-gradient(1200px 700px at 50% 120%, #05202a 0%, transparent 60%),
+    linear-gradient(180deg, #0b0f14 0%, #0a0e13 60%, #090c10 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 20s ease infinite;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
+}
+
+/* Subtle star noise using layered shadows (GPU-friendly) */
+.starfield::before {
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      1px 1px at 20% 30%,
+      rgba(255, 255, 255, 0.06) 0,
+      transparent 100%
+    ),
+    radial-gradient(
+      1px 1px at 80% 20%,
+      rgba(255, 255, 255, 0.05) 0,
+      transparent 100%
+    ),
+    radial-gradient(
+      1px 1px at 40% 70%,
+      rgba(255, 255, 255, 0.04) 0,
+      transparent 100%
+    );
+}
+
+/* Heavier sections rendered below the fold; improves CLS and layout work */
+.section-heavy {
+  content-visibility: auto;
+  contain-intrinsic-size: 800px 1200px;
+}
+
+/* Focus styles */
+:where(a, button, [role="button"])::selection {
+  background: color-mix(in oklab, var(--accent-to) 35%, transparent);
+}
+
+:where(a, button, [role="button"]):focus-visible {
+  outline: 2px solid
+    color-mix(in oklab, var(--accent-to) 70%, var(--accent-from));
+  outline-offset: 2px;
+}
+
+/* Progressive CSS scroll-driven effect */
+@supports (animation-timeline: scroll()) {
+  .bg-shift {
+    animation: hue 1turn linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes hue {
+    from {
+      filter: hue-rotate(0deg);
+    }
+    to {
+      filter: hue-rotate(6deg);
+    }
+  }
 }

@@ -1,0 +1,74 @@
+"use client";
+
+import { MotionConfig, useReducedMotion } from "framer-motion";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
+export type MotionPrefs = {
+  reduced: boolean;
+  coarse: boolean;
+  lowEnd: boolean;
+  density: "low" | "high";
+};
+
+const MotionPrefsContext = createContext<MotionPrefs>({
+  reduced: false,
+  coarse: false,
+  lowEnd: false,
+  density: "high",
+});
+
+export function useMotionPrefs() {
+  return useContext(MotionPrefsContext);
+}
+
+export default function MotionProvider({ children }: { children: ReactNode }) {
+  const prefersReduced = useReducedMotion();
+  const [prefs, setPrefs] = useState<MotionPrefs>({
+    reduced: false,
+    coarse: false,
+    lowEnd: false,
+    density: "high",
+  });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const reduced = !!prefersReduced;
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    const lowEnd = (navigator as any).deviceMemory
+      ? (navigator as any).deviceMemory <= 4
+      : (navigator.hardwareConcurrency ?? 8) <= 4;
+    const density: "low" | "high" =
+      reduced || lowEnd || coarse ? "low" : "high";
+    setPrefs({ reduced, coarse, lowEnd, density });
+  }, [prefersReduced]);
+
+  // Tune springs; fallback to gentle tweens when reduced motion
+  const transition = useMemo(() => {
+    if (prefs.reduced) {
+      return {
+        type: "tween" as const,
+        duration: 0.18,
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+      };
+    }
+    return { type: "spring" as const, damping: 30, stiffness: 200, mass: 0.8 };
+  }, [prefs.reduced]);
+
+  return (
+    <MotionPrefsContext.Provider value={prefs}>
+      <MotionConfig
+        reducedMotion={prefs.reduced ? "always" : "never"}
+        transition={transition}
+      >
+        {children}
+      </MotionConfig>
+    </MotionPrefsContext.Provider>
+  );
+}

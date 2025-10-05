@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="2340" viewBox="0 0 1080 2340">
+  <defs>
+    <linearGradient id="g2" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0b0f14"/>
+      <stop offset="1" stop-color="#0a0e13"/>
+    </linearGradient>
+    <linearGradient id="a2" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#06b6d4"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="2340" fill="url(#g2)"/>
+  <rect x="90" y="160" width="900" height="2020" rx="48" fill="#101724" stroke="#1b2430"/>
+  <text x="140" y="360" font-family="Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial" font-size="40" fill="#e6e6e6" font-weight="600">Feature Grid</text>
+  <rect x="140" y="420" width="800" height="120" rx="16" fill="#0f1520" stroke="#1b2430"/>
+  <rect x="140" y="560" width="800" height="120" rx="16" fill="#0f1520" stroke="#1b2430"/>
+  <rect x="140" y="700" width="800" height="120" rx="16" fill="#0f1520" stroke="#1b2430"/>
+  <circle cx="870" cy="360" r="60" fill="url(#a2)" opacity="0.6"/>
+</svg>
