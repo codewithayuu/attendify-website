@@ -1,5 +1,5 @@
 {
-  "buildCommand": "next build",
+  "buildCommand": "rm -rf .next && next build",
   "framework": "nextjs",
   "installCommand": "npm install",
   "ignoreCommand": "exit 0"
