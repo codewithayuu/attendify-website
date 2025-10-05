@@ -1,7 +1,8 @@
 export function isLowEndDevice() {
   if (typeof navigator === "undefined") return false;
   const coarse = matchMedia("(pointer: coarse)").matches;
-  const mem = (navigator as any).deviceMemory ?? 4;
+  const nav = navigator as Navigator & { deviceMemory?: number };
+  const mem = nav.deviceMemory ?? 4;
   const cores = navigator.hardwareConcurrency ?? 4;
   const dpr =
     typeof window !== "undefined" ? (window.devicePixelRatio ?? 1) : 1;

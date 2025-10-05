@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { NextWebVitalsMetric } from "next/app";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MotionProvider from "@/components/providers/MotionProvider";
@@ -49,13 +50,16 @@ export default function RootLayout({
 }
 
 // Web Vitals export: logs to console and forwards to Plausible (if available)
-export function reportWebVitals(metric: any) {
+export function reportWebVitals(metric: NextWebVitalsMetric) {
   if (typeof window === "undefined") return;
-  // eslint-disable-next-line no-console
   console.log("[web-vitals]", metric);
-  const plausible = (window as any).plausible as
-    | undefined
-    | ((event: string, opts?: any) => void);
+  type PlausibleFn = (
+    event: string,
+    options?: { props?: Record<string, string | number> }
+  ) => void;
+  const plausible = (
+    window as unknown as { plausible?: PlausibleFn }
+  ).plausible;
   try {
     plausible?.("Web Vitals", {
       props: {

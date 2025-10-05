@@ -42,7 +42,7 @@ export default function Screenshots({ slides }: { slides: Slide[] }) {
     const onVis = () => {
       pauseRef.current = document.hidden;
     };
-    const onPointer = () => {
+    const onPointer: EventListener = () => {
       pauseRef.current = true;
       window.setTimeout(() => (pauseRef.current = false), 4000);
     };
@@ -53,9 +53,9 @@ export default function Screenshots({ slides }: { slides: Slide[] }) {
     return () => {
       if (timer) clearTimeout(timer);
       document.removeEventListener("visibilitychange", onVis);
-      emblaApi?.containerNode().removeEventListener("pointerdown", onPointer as any);
-      emblaApi?.containerNode().removeEventListener("mouseenter", onPointer as any);
-      emblaApi?.containerNode().removeEventListener("focusin", onPointer as any);
+      emblaApi?.containerNode().removeEventListener("pointerdown", onPointer);
+      emblaApi?.containerNode().removeEventListener("mouseenter", onPointer);
+      emblaApi?.containerNode().removeEventListener("focusin", onPointer);
     };
   }, [emblaApi, slides, enableAnim]);
 

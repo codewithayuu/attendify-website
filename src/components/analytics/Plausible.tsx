@@ -4,11 +4,15 @@ import { useEffect } from "react";
 
 export default function Plausible() {
   useEffect(() => {
-    const isDNT =
-      (typeof navigator !== "undefined" &&
-        ((navigator as any).doNotTrack === "1" ||
-          (window as any).doNotTrack === "1")) ||
-      false;
+    const navDNT =
+      typeof navigator !== "undefined"
+        ? (navigator as Navigator & { doNotTrack?: string }).doNotTrack
+        : undefined;
+    const winDNT =
+      typeof window !== "undefined"
+        ? (window as Window & { doNotTrack?: string }).doNotTrack
+        : undefined;
+    const isDNT = (navDNT === "1" || winDNT === "1") || false;
     if (isDNT) return;
 
     const inject = () => {
@@ -21,8 +25,13 @@ export default function Plausible() {
       document.head.appendChild(s);
     };
 
-    if ("requestIdleCallback" in window) {
-      (window as any).requestIdleCallback(inject);
+    type RequestIdleCallbackFn = (
+      cb: (deadline: { didTimeout: boolean; timeRemaining: () => number }) => void,
+      opts?: { timeout?: number },
+    ) => number;
+    const w = window as Window & { requestIdleCallback?: RequestIdleCallbackFn };
+    if ("requestIdleCallback" in window && typeof w.requestIdleCallback === "function") {
+      w.requestIdleCallback(inject);
     } else {
       setTimeout(inject, 1500);
     }

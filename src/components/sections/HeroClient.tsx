@@ -33,8 +33,8 @@ export default function HeroClient({ apkUrl }: { apkUrl: string }) {
   );
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
 
-  const titleWC = useWillChangeTransient("transform");
-  const subWC = useWillChangeTransient("transform");
+  const titleWC = useWillChangeTransient<HTMLHeadingElement>("transform");
+  const subWC = useWillChangeTransient<HTMLParagraphElement>("transform");
 
   return (
     <section
@@ -72,7 +72,7 @@ export default function HeroClient({ apkUrl }: { apkUrl: string }) {
           </a>
         </div>
         <motion.h1
-          ref={titleWC.ref as any}
+          ref={titleWC.ref}
           onUpdate={titleWC.onStart}
           onAnimationComplete={titleWC.onComplete}
           style={{ y: y1, opacity, transformStyle: "preserve-3d" }}
@@ -84,7 +84,7 @@ export default function HeroClient({ apkUrl }: { apkUrl: string }) {
           Hit 75% with confidence
         </motion.h1>
         <motion.p
-          ref={subWC.ref as any}
+          ref={subWC.ref}
           onUpdate={subWC.onStart}
           onAnimationComplete={subWC.onComplete}
           style={{ y: y2, opacity, transformStyle: "preserve-3d" }}

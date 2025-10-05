@@ -45,7 +45,7 @@ export default function Features() {
     reduced || coarse
       ? {}
       : {
-          whileHover: { y: -6, scale: 1.01, transition: springs.snappy as any },
+          whileHover: { y: -6, scale: 1.01, transition: springs.snappy },
         };
 
   return (

@@ -16,7 +16,6 @@ export default function RuntimeBudget() {
 
     const KB = scriptBytes / 1024;
     if (KB > 130) {
-      // eslint-disable-next-line no-console
       console.warn(
         `[Budget] Client JS ~${KB.toFixed(1)}KB exceeds 130KB target.`,
       );

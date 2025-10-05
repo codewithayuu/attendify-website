@@ -13,8 +13,9 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const deviceMemory = (navigator as any).deviceMemory as number | undefined;
-    const cores = (navigator as any).hardwareConcurrency as number | undefined;
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const deviceMemory = nav.deviceMemory as number | undefined;
+    const cores = navigator.hardwareConcurrency as number | undefined;
     const lowEnd = (deviceMemory && deviceMemory <= 4) || (cores && cores <= 4);
     const toggle = params?.get("lenis");
     const forceOn = toggle === "on";

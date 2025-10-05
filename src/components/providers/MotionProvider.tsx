@@ -41,8 +41,9 @@ export default function MotionProvider({ children }: { children: ReactNode }) {
     if (typeof window === "undefined") return;
     const reduced = !!prefersReduced;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
-    const lowEnd = (navigator as any).deviceMemory
-      ? (navigator as any).deviceMemory <= 4
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    const lowEnd = nav.deviceMemory
+      ? nav.deviceMemory <= 4
       : (navigator.hardwareConcurrency ?? 8) <= 4;
     const density: "low" | "high" =
       reduced || lowEnd || coarse ? "low" : "high";

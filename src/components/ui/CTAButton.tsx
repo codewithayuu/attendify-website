@@ -27,7 +27,7 @@ export default function CTAButton(props: CTAButtonProps) {
   } = props;
   const { reduced, coarse, density } = useMotionPrefs();
   const isDesktopMagnet = density === "high" && !coarse && !reduced;
-  const mag = useMagnetic();
+  const mag = useMagnetic<HTMLAnchorElement>();
 
   // Simple, GPU-friendly ripple for mobile/coarse pointers
   const [ripples, setRipples] = useState<
@@ -59,14 +59,14 @@ export default function CTAButton(props: CTAButtonProps) {
 
   const magnetProps = isDesktopMagnet
     ? {
-        ref: (node: HTMLAnchorElement) => {
-          (btnRef as any).current = node;
-          (mag.ref as any).current = node;
+        ref: (node: HTMLAnchorElement | null) => {
+          btnRef.current = node;
+          mag.ref.current = node;
         },
         onMouseMove: mag.onMouseMove,
         onMouseLeave: mag.onMouseLeave,
       }
-    : { ref: btnRef as any };
+    : { ref: btnRef };
 
   return (
     <a

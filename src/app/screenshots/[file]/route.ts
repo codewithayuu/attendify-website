@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import path from "node:path";
 import fs from "node:fs/promises";
+import type { Stats } from "node:fs";
 
 const CONTENT_TYPE: Record<string, string> = {
   ".png": "image/png",
@@ -19,7 +20,7 @@ export async function GET(req: NextRequest, { params }: { params: { file: string
     ];
 
     let full: string | null = null;
-    let stat: any = null;
+    let stat: Stats | null = null;
     for (const base of bases) {
       const candidate = path.join(base, filename);
       const rel = path.relative(base, candidate);

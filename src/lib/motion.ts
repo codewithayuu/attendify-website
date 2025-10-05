@@ -1,29 +1,34 @@
 import { useRef } from "react";
+import type { Transition } from "framer-motion";
 
-export const springs = {
-  snappy: { type: "spring" as const, damping: 28, stiffness: 220 },
-  gentle: { type: "spring" as const, damping: 32, stiffness: 180 },
+export const springs: { snappy: Transition; gentle: Transition } = {
+  snappy: { type: "spring", damping: 28, stiffness: 220 },
+  gentle: { type: "spring", damping: 32, stiffness: 180 },
 };
 
-export const tweens = {
+export const tweens: { micro: Transition } = {
   micro: {
-    type: "tween" as const,
+    type: "tween",
     duration: 0.18,
-    ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
+    ease: [0.22, 1, 0.36, 1],
   },
 };
 
-export function useWillChangeTransient(prop = "transform") {
-  const ref = useRef<HTMLElement | null>(null);
+export function useWillChangeTransient<T extends HTMLElement = HTMLElement>(
+  prop = "transform",
+) {
+  const ref = useRef<T | null>(null);
   const onStart = () => ref.current?.style.setProperty("will-change", prop);
   const onComplete = () => ref.current?.style.removeProperty("will-change");
   return { ref, onStart, onComplete } as const;
 }
 
-export function useMagnetic({ radius = 96, strength = 0.15 } = {}) {
-  const ref = useRef<HTMLElement | null>(null);
+export function useMagnetic<T extends HTMLElement = HTMLElement>(
+  { radius = 96, strength = 0.15 } = {},
+) {
+  const ref = useRef<T | null>(null);
   const onMouseMove = (e: React.MouseEvent) => {
-    const el = ref.current as HTMLElement | null;
+    const el = ref.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
@@ -38,7 +43,7 @@ export function useMagnetic({ radius = 96, strength = 0.15 } = {}) {
     el.style.transform = `translate3d(${dx * strength}px, ${dy * strength}px, 0)`;
   };
   const onMouseLeave = () => {
-    const el = ref.current as HTMLElement | null;
+    const el = ref.current;
     if (!el) return;
     el.style.transform = "translate3d(0,0,0)";
   };

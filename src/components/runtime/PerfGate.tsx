@@ -15,7 +15,6 @@ export default function PerfGate() {
     // @ts-ignore - Longtask type not in lib.dom.d.ts by default in some TS targets
     const po = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
-        // eslint-disable-next-line no-console
         console.warn("[longtask]", {
           duration: Math.round(entry.duration),
           name: entry.name,
