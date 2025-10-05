@@ -56,7 +56,7 @@ export default function Features() {
             Why Attendify
           </h2>
           <p className="mt-2 text-center text-sm text-[var(--color-muted)]">
-            Fast, focused features that don't get in your way.
+            Fast, focused features that don&apos;t get in your way.
           </p>
         </ScrollReveal>
 

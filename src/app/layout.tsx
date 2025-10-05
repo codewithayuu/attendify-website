@@ -8,6 +8,8 @@ import DefaultSEO from "@/components/seo/DefaultSEO";
 import RuntimeBudget from "@/components/runtime/RuntimeBudget";
 import Plausible from "@/components/analytics/Plausible";
 import PerfGate from "@/components/runtime/PerfGate";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +40,8 @@ export default function RootLayout({
         <DefaultSEO />
         <Plausible />
         <PerfGate />
+        <Analytics />
+        <SpeedInsights />
         <MotionProvider>
           <SmoothScroll>
             <RuntimeBudget />

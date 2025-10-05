@@ -12,7 +12,6 @@ export default function PerfGate() {
     if (!enabled) return;
     if (typeof PerformanceObserver === "undefined") return;
     // Long task observer to detect TBT hotspots
-    // @ts-ignore - Longtask type not in lib.dom.d.ts by default in some TS targets
     const po = new PerformanceObserver((list) => {
       for (const entry of list.getEntries()) {
         console.warn("[longtask]", {
@@ -22,8 +21,8 @@ export default function PerfGate() {
       }
     });
     try {
-      // @ts-ignore
-      po.observe({ type: "longtask", buffered: true });
+      // Some TS lib.dom versions don't include 'longtask'; assert the init type safely
+      po.observe({ type: "longtask", buffered: true } as unknown as PerformanceObserverInit);
     } catch {}
     return () => {
       try {

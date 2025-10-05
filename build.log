@@ -1,0 +1,37 @@
+
+> attendify-website@0.1.0 build
+> next build --turbopack
+
+   Γû▓ Next.js 15.5.4 (Turbopack)
+
+   Creating an optimized production build ...
+ Γ£ô Finished writing to disk in 27ms
+ Γ£ô Compiled successfully in 3.2s
+   Linting and checking validity of types ...
+
+./src/components/sections/Footer.tsx
+2:9  Warning: 'year' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./src/lib/screenshots.ts
+17:7  Warning: 'base' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+Failed to compile.
+
+.next/types/validator.ts:72:31
+Type error: Type 'typeof import("C:/Users/Ayush/Downloads/project/AttendifyWebsite/attendify-website/src/app/media/screenshot/[file]/route")' does not satisfy the constraint 'RouteHandlerConfig<"/media/screenshot/[file]">'.
+  Types of property 'GET' are incompatible.
+    Type '(_req: NextRequest, { params }: { params: { file: string; }; }) => Promise<Response>' is not assignable to type '(request: NextRequest, context: { params: Promise<{ file: string; }>; }) => void | Response | Promise<void | Response>'.
+      Types of parameters '__1' and 'context' are incompatible.
+        Type '{ params: Promise<{ file: string; }>; }' is not assignable to type '{ params: { file: string; }; }'.
+          Types of property 'params' are incompatible.
+            Property 'file' is missing in type 'Promise<{ file: string; }>' but required in type '{ file: string; }'.
+
+  70 |   type __IsExpected<Specific extends RouteHandlerConfig<"/media/screenshot/[file]">> = Specific
+  71 |   const handler = {} as typeof import("../../src/app/media/screenshot/[file]/route.js")
+> 72 |   type __Check = __IsExpected<typeof handler>
+     |                               ^
+  73 |   // @ts-ignore
+  74 |   type __Unused = __Check
+  75 | }
+Next.js build worker exited with code: 1 and signal: null
