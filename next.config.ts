@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
     // !! WARN: Temporarily bypass TypeScript errors during build
     ignoreBuildErrors: true,
   },
+  experimental: {
+    typedRoutes: false,
+  },
   eslint: {
     // !! WARN: Temporarily bypass ESLint errors during build
     ignoreDuringBuilds: true,
