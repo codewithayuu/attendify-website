@@ -6,28 +6,29 @@ export type Slide = { src: string; alt: string };
 const ALLOWED_EXT = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg"]);
 
 export async function getScreenshots(): Promise<Slide[]> {
-  // Read from public so the generated /screenshots URLs resolve correctly in production
-  const primary = path.join(process.cwd(), "public", "screenshots");
-  const fallback = path.join(process.cwd(), "public", "screenshot");
-  let entries: string[] = [];
-  try {
-    entries = await fs.readdir(primary);
-  } catch {
+  // Prefer developer-provided images in src/; fallback to public/
+  const candidates = [
+    path.join(process.cwd(), "src", "screenshots"),
+    path.join(process.cwd(), "src", "screenshot"),
+    path.join(process.cwd(), "public", "screenshots"),
+    path.join(process.cwd(), "public", "screenshot"),
+  ];
+
+  for (const dir of candidates) {
     try {
-      entries = await fs.readdir(fallback);
-    } catch {
-      return [];
-    }
+      const entries = await fs.readdir(dir);
+      const files = entries
+        .filter((f) => ALLOWED_EXT.has(path.extname(f).toLowerCase()))
+        .sort((a, b) =>
+          a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }),
+        );
+      if (files.length > 0) {
+        return files.map((file) => ({
+          src: `/media/screenshots/${encodeURIComponent(file)}`,
+          alt: file.replace(/\.[^.]+$/, ""),
+        }));
+      }
+    } catch {}
   }
-
-  const files = entries
-    .filter((f) => ALLOWED_EXT.has(path.extname(f).toLowerCase()))
-    .sort((a, b) =>
-      a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" }),
-    );
-
-  return files.map((file) => ({
-    src: `/screenshots/${encodeURIComponent(file)}`,
-    alt: file.replace(/\.[^.]+$/, ""),
-  }));
+  return [];
 }

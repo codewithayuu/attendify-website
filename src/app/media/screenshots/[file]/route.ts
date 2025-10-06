@@ -3,6 +3,8 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import type { Stats } from "node:fs";
 
+export const runtime = "nodejs";
+
 const CONTENT_TYPE: Record<string, string> = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -11,11 +13,15 @@ const CONTENT_TYPE: Record<string, string> = {
   ".svg": "image/svg+xml",
 };
 
-export async function GET(req: NextRequest, { params }: { params: { file: string } }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { file: string } }
+) {
   try {
     const { file } = params;
     const filename = decodeURIComponent(file);
-    // Prefer src/ (developer-provided) then fallback to public/
+
+    // Prefer developer-provided assets in src/, then fallback to public/
     const bases = [
       path.join(process.cwd(), "src", "screenshots"),
       path.join(process.cwd(), "src", "screenshot"),
@@ -41,6 +47,7 @@ export async function GET(req: NextRequest, { params }: { params: { file: string
     const data = await fs.readFile(full);
     const ext = path.extname(filename).toLowerCase();
     const type = CONTENT_TYPE[ext] || "application/octet-stream";
+
     const etag = `W/"${stat.size}-${stat.mtimeMs}"`;
     const lastModified = stat.mtime.toUTCString();
 
