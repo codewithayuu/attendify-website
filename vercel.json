@@ -1,5 +1,0 @@
-{
-  "buildCommand": "rm -rf .next && npm run build:vercel",
-  "framework": null,
-  "installCommand": "npm install"
-}
