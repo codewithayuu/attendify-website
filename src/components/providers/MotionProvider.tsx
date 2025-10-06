@@ -1,6 +1,6 @@
 "use client";
 
-import { MotionConfig, useReducedMotion } from "framer-motion";
+import { MotionConfig } from "framer-motion";
 import {
   ReactNode,
   createContext,
@@ -29,7 +29,6 @@ export function useMotionPrefs() {
 }
 
 export default function MotionProvider({ children }: { children: ReactNode }) {
-  const prefersReduced = typeof window !== "undefined" ? useReducedMotion() : false;
   const [prefs, setPrefs] = useState<MotionPrefs>({
     reduced: false,
     coarse: false,
@@ -39,7 +38,7 @@ export default function MotionProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const reduced = !!prefersReduced;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const coarse = window.matchMedia("(pointer: coarse)").matches;
     const nav = navigator as Navigator & { deviceMemory?: number };
     const lowEnd = nav.deviceMemory
@@ -48,7 +47,7 @@ export default function MotionProvider({ children }: { children: ReactNode }) {
     const density: "low" | "high" =
       reduced || lowEnd || coarse ? "low" : "high";
     setPrefs({ reduced, coarse, lowEnd, density });
-  }, [prefersReduced]);
+  }, []);
 
   // Tune springs; fallback to gentle tweens when reduced motion
   const transition = useMemo(() => {
