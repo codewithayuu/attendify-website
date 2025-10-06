@@ -1,6 +1,6 @@
 {
-  "buildCommand": "rm -rf .next && next build",
-  "framework": "nextjs",
+  "buildCommand": "rm -rf .next && npm run build:vercel",
+  "framework": null,
   "installCommand": "npm install",
   "ignoreCommand": "exit 0"
 }
