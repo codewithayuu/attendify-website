@@ -15,21 +15,22 @@ export default function HeroClient({ apkUrl }: { apkUrl: string }) {
   });
   const { reduced, coarse, lowEnd, density } = useMotionPrefs();
   const enableParallax = density === "high" && !coarse && !lowEnd && !reduced;
+  const lightMode = coarse || lowEnd || reduced;
 
   const y1 = useTransform(
     scrollYProgress,
     [0, 1],
-    [0, enableParallax ? -60 : 0],
+    [0, enableParallax ? -40 : 0],
   );
   const y2 = useTransform(
     scrollYProgress,
     [0, 1],
-    [0, enableParallax ? -35 : 0],
+    [0, enableParallax ? -24 : 0],
   );
   const y3 = useTransform(
     scrollYProgress,
     [0, 1],
-    [0, enableParallax ? -20 : 0],
+    [0, enableParallax ? -14 : 0],
   );
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0.3]);
 
@@ -42,23 +43,25 @@ export default function HeroClient({ apkUrl }: { apkUrl: string }) {
       className="relative isolate px-4 sm:px-6 md:px-8 py-20 sm:py-28 md:py-36"
       style={{ perspective: "900px" }}
     >
-      <div className="absolute inset-0 -z-10 opacity-40 [mask-image:radial-gradient(60%_60%_at_50%_20%,#000_40%,transparent_70%)]">
-        {/* Layer 1: broad gradient wash */}
-        <motion.div
-          style={{ y: y3 }}
-          className="absolute inset-x-0 -top-40 h-[480px] bg-gradient-to-tr from-[var(--accent-from)]/30 via-transparent to-[var(--accent-to)]/30 blur-3xl will-change-transform"
-        />
-        {/* Layer 2: soft orb left */}
-        <motion.div
-          style={{ y: y2 }}
-          className="absolute -left-10 top-20 size-64 rounded-full bg-[var(--color-accent-to)]/10 blur-2xl will-change-transform"
-        />
-        {/* Layer 3: soft orb right */}
-        <motion.div
-          style={{ y: y1 }}
-          className="absolute -right-10 top-10 size-72 rounded-full bg-[var(--color-accent-from)]/10 blur-2xl will-change-transform"
-        />
-      </div>
+      {!lightMode && (
+        <div className="absolute inset-0 -z-10 opacity-40 [mask-image:radial-gradient(60%_60%_at_50%_20%,#000_40%,transparent_70%)]">
+          {/* Layer 1: broad gradient wash */}
+          <motion.div
+            style={{ y: y3 }}
+            className="absolute inset-x-0 -top-40 h-[420px] bg-gradient-to-tr from-[var(--accent-from)]/25 via-transparent to-[var(--accent-to)]/25 blur-2xl will-change-transform"
+          />
+          {/* Layer 2: soft orb left */}
+          <motion.div
+            style={{ y: y2 }}
+            className="absolute -left-8 top-20 size-56 rounded-full bg-[var(--color-accent-to)]/10 blur-xl will-change-transform"
+          />
+          {/* Layer 3: soft orb right */}
+          <motion.div
+            style={{ y: y1 }}
+            className="absolute -right-8 top-10 size-64 rounded-full bg-[var(--color-accent-from)]/10 blur-xl will-change-transform"
+          />
+        </div>
+      )}
 
       <div className="mx-auto max-w-3xl text-center">
         <div className="mb-4 flex justify-center">

@@ -5,6 +5,7 @@ import FinalCTA from "@/components/sections/FinalCTA";
 import Footer from "@/components/sections/Footer";
 import { InView } from "@/lib/inview";
 import { getScreenshots } from "@/lib/screenshots";
+import ClientProviders from "@/components/providers/ClientProviders";
 
 const ScreenshotsClient = dynamic(() => import("@/components/sections/Screenshots"), {
   loading: () => (
@@ -42,20 +43,22 @@ const FAQClient = dynamic(() => import("@/components/sections/FAQ"), {
 export default async function Home() {
   const slides = await getScreenshots();
   return (
-    <main>
-      <Hero />
-      <InView>
-        <FeaturesClient />
-      </InView>
-      <InView>
-        <ScreenshotsClient slides={slides} />
-      </InView>
-      <HowItWorks />
-      <InView>
-        <FAQClient />
-      </InView>
-      <FinalCTA />
-      <Footer />
-    </main>
+    <ClientProviders>
+      <main>
+        <Hero />
+        <InView>
+          <FeaturesClient />
+        </InView>
+        <InView>
+          <ScreenshotsClient slides={slides} />
+        </InView>
+        <HowItWorks />
+        <InView>
+          <FAQClient />
+        </InView>
+        <FinalCTA />
+        <Footer />
+      </main>
+    </ClientProviders>
   );
 }

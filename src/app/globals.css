@@ -35,6 +35,11 @@
   }
 }
 
+/* Improve heading wrapping on small screens */
+h1, h2 {
+  text-wrap: balance;
+}
+
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -99,6 +104,19 @@ body {
       rgba(255, 255, 255, 0.04) 0,
       transparent 100%
     );
+}
+
+/* Lighter visuals on touch/mobile to reduce jank */
+@media (pointer: coarse) {
+  body {
+    animation: none;
+    background:
+      linear-gradient(180deg, #0b0f14 0%, #0a0e13 60%, #090c10 100%);
+    background-size: auto;
+  }
+  .starfield::before {
+    display: none;
+  }
 }
 
 /* Heavier sections rendered below the fold; improves CLS and layout work */

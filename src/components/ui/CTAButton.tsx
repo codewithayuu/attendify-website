@@ -25,7 +25,7 @@ export default function CTAButton(props: CTAButtonProps) {
     download,
     className,
   } = props;
-  const { reduced, coarse, density } = useMotionPrefs();
+  const { reduced, coarse, density, lowEnd } = useMotionPrefs();
   const isDesktopMagnet = density === "high" && !coarse && !reduced;
   const mag = useMagnetic<HTMLAnchorElement>();
 
@@ -37,7 +37,7 @@ export default function CTAButton(props: CTAButtonProps) {
   const btnRef = useRef<HTMLAnchorElement | null>(null);
 
   const onPointerDown = (e: React.PointerEvent) => {
-    if (!coarse || reduced) return;
+    if (!coarse || reduced || lowEnd) return;
     const el = btnRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
@@ -50,7 +50,7 @@ export default function CTAButton(props: CTAButtonProps) {
   };
 
   const base =
-    "relative overflow-hidden inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-to)]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black/30";
+    "relative overflow-hidden inline-flex items-center justify-center rounded-full px-5 py-3 text-sm font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-accent-to)]/70 focus-visible:ring-offset-2 focus-visible:ring-offset-black/30 min-h-[44px] select-none";
   const styles = useMemo(() => {
     if (variant === "secondary")
       return "border border-[var(--color-border)] text-[var(--color-foreground)]/90 hover:bg-white/5 active:opacity-90";
@@ -81,6 +81,7 @@ export default function CTAButton(props: CTAButtonProps) {
         coarse && !reduced && "active:scale-[0.98]",
       )}
       onPointerDown={onPointerDown}
+      style={{ WebkitTapHighlightColor: "transparent", touchAction: "manipulation" }}
       {...magnetProps}
     >
       {children}

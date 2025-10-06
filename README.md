@@ -22,7 +22,7 @@ npm run dev
 
 ## Links
 - App repo: https://github.com/codewithayuu/attendify
-- APK (latest): https://github.com/codewithayuu/attendify/releases/latest
+- APK : https://github.com/codewithayuu/attendify/releases/latest
 - Website: https://your-domain.com
 
 ---

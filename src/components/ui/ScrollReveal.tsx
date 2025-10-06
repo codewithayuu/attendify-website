@@ -13,9 +13,10 @@ type ScrollRevealProps = {
 export default function ScrollReveal({ children, delay = 0, className }: ScrollRevealProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const { reduced } = useMotionPrefs();
+  const { reduced, coarse } = useMotionPrefs();
 
-  if (reduced) {
+  // On mobile/coarse pointers or reduced motion, render statically
+  if (reduced || coarse) {
     return <div className={className}>{children}</div>;
   }
 
