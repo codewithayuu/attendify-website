@@ -1,14 +1,23 @@
 "use client";
 
-import { ReactNode } from "react";
-import dynamic from "next/dynamic";
-
-const MotionProvider = dynamic(() => import("@/components/providers/MotionProvider"), { ssr: false });
-const SmoothScroll = dynamic(() => import("@/components/providers/SmoothScroll"), { ssr: false });
-const RuntimeBudget = dynamic(() => import("@/components/runtime/RuntimeBudget"), { ssr: false });
-const PerfGate = dynamic(() => import("@/components/runtime/PerfGate"), { ssr: false });
+import { ReactNode, useEffect, useState } from "react";
+import MotionProvider from "@/components/providers/MotionProvider";
+import SmoothScroll from "@/components/providers/SmoothScroll";
+import RuntimeBudget from "@/components/runtime/RuntimeBudget";
+import PerfGate from "@/components/runtime/PerfGate";
 
 export default function ClientProviders({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render providers during SSR to avoid framer-motion useContext error
+  if (!mounted) {
+    return <>{children}</>;
+  }
+
   return (
     <>
       <PerfGate />
