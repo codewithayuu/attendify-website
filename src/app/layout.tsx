@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import type { NextWebVitalsMetric } from "next/app";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import MotionProvider from "@/components/providers/MotionProvider";
-import SmoothScroll from "@/components/providers/SmoothScroll";
-import DefaultSEO from "@/components/seo/DefaultSEO";
-import RuntimeBudget from "@/components/runtime/RuntimeBudget";
-import Plausible from "@/components/analytics/Plausible";
-import PerfGate from "@/components/runtime/PerfGate";
+import dynamic from "next/dynamic";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+const MotionProvider = dynamic(() => import("@/components/providers/MotionProvider"), { ssr: false });
+const SmoothScroll = dynamic(() => import("@/components/providers/SmoothScroll"), { ssr: false });
+const DefaultSEO = dynamic(() => import("@/components/seo/DefaultSEO"), { ssr: false });
+const RuntimeBudget = dynamic(() => import("@/components/runtime/RuntimeBudget"), { ssr: false });
+const Plausible = dynamic(() => import("@/components/analytics/Plausible"), { ssr: false });
+const PerfGate = dynamic(() => import("@/components/runtime/PerfGate"), { ssr: false });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
