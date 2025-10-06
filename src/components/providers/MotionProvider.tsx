@@ -29,7 +29,7 @@ export function useMotionPrefs() {
 }
 
 export default function MotionProvider({ children }: { children: ReactNode }) {
-  const prefersReduced = useReducedMotion();
+  const prefersReduced = typeof window !== "undefined" ? useReducedMotion() : false;
   const [prefs, setPrefs] = useState<MotionPrefs>({
     reduced: false,
     coarse: false,
