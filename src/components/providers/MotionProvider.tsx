@@ -29,12 +29,17 @@ export function useMotionPrefs() {
 }
 
 export default function MotionProvider({ children }: { children: ReactNode }) {
+  const [mounted, setMounted] = useState(false);
   const [prefs, setPrefs] = useState<MotionPrefs>({
     reduced: false,
     coarse: false,
     lowEnd: false,
     density: "high",
   });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -60,6 +65,15 @@ export default function MotionProvider({ children }: { children: ReactNode }) {
     }
     return { type: "spring" as const, damping: 30, stiffness: 200, mass: 0.8 };
   }, [prefs.reduced]);
+
+  // Don't render MotionConfig during SSR to avoid useContext errors
+  if (!mounted) {
+    return (
+      <MotionPrefsContext.Provider value={prefs}>
+        {children}
+      </MotionPrefsContext.Provider>
+    );
+  }
 
   return (
     <MotionPrefsContext.Provider value={prefs}>
