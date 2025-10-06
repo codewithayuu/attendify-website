@@ -20,6 +20,7 @@ export default function Screenshots({ slides }: { slides: Slide[] }) {
   const pauseRef = useRef(false);
   const { reduced, coarse, density } = useMotionPrefs();
   const enableAnim = density === "high" && !coarse && !reduced;
+  const mobileSimple = coarse || reduced || density === "low";
 
   useEffect(() => {
     if (!emblaApi) return;
@@ -60,20 +61,21 @@ export default function Screenshots({ slides }: { slides: Slide[] }) {
   }, [emblaApi, slides, enableAnim]);
 
   const visibleSet = useMemo(() => {
+    if (mobileSimple) return new Set<number>(slides.map((_, i) => i));
     const n = slides?.length ?? 0;
     const isNear = (i: number) => {
       if (!n) return false;
       const d1 = (i - index + n) % n;
       const d2 = (index - i + n) % n;
       const d = Math.min(d1, d2);
-      return d <= 2; // current ±2
+      return d <= 3; // widen buffer to current ±3
     };
     return new Set(
       Array.from({ length: n }, (_, i) => (isNear(i) ? i : -1)).filter(
         (v) => v !== -1,
       ) as number[],
     );
-  }, [index, slides]);
+  }, [index, slides, mobileSimple]);
 
   if (!slides || slides.length === 0) {
     return (

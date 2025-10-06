@@ -6,8 +6,9 @@ export type Slide = { src: string; alt: string };
 const ALLOWED_EXT = new Set([".png", ".jpg", ".jpeg", ".webp", ".svg"]);
 
 export async function getScreenshots(): Promise<Slide[]> {
-  const primary = path.join(process.cwd(), "src", "screenshots");
-  const fallback = path.join(process.cwd(), "src", "screenshot");
+  // Read from public so the generated /screenshots URLs resolve correctly in production
+  const primary = path.join(process.cwd(), "public", "screenshots");
+  const fallback = path.join(process.cwd(), "public", "screenshot");
   let entries: string[] = [];
   try {
     entries = await fs.readdir(primary);

@@ -11,13 +11,14 @@ const CONTENT_TYPE: Record<string, string> = {
   ".svg": "image/svg+xml",
 };
 
-export async function GET(req: NextRequest, context: { params: Promise<{ file: string }> }) {
+export async function GET(req: NextRequest, { params }: { params: { file: string } }) {
   try {
-    const { file } = await context.params;
+    const { file } = params;
     const filename = decodeURIComponent(file);
+    // Serve from public to match /screenshots/* URLs reliably in prod
     const bases = [
-      path.join(process.cwd(), "src", "screenshots"),
-      path.join(process.cwd(), "src", "screenshot"),
+      path.join(process.cwd(), "public", "screenshots"),
+      path.join(process.cwd(), "public", "screenshot"),
     ];
 
     let full: string | null = null;
